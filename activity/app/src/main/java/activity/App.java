@@ -3,12 +3,17 @@
  */
 package activity;
 
+import javax.persistence.EntityManager;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        ConexionOBD conexionOBD = new ConexionOBD("miUnidadPersistencia");
+        
+        try {
+            EntityManager entityManager = conexionOBD.getEM();
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 }
