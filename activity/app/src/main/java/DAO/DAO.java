@@ -42,7 +42,62 @@ public class DAO {
             System.out.println("Error: " + e);
         }
     }
-    
+
+    public static void delete(EntityManager entityManager, Class<?> entity) {
+        try {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Ingrese el valor para id:");
+            int id = scanner.nextInt();
+
+            Object objeto_eliminar = entityManager.find(entity, id);
+
+            if (objeto_eliminar != null) {
+                entityManager.getTransaction().begin();
+                entityManager.remove(objeto_eliminar);
+                entityManager.getTransaction().commit();
+                System.out.println("Eliminado exitosamente");
+            } else {
+                System.out.println("No se encontro el objeto con el ID");
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void update(EntityManager entityManager, Class<?> entity) {
+        try {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Ingrese el valor para id:");
+            int id = scanner.nextInt();
+
+            Object objeto_modificar = entityManager.find(entity, id);
+            
+            if(objeto_modificar != null){
+                Field[] campos = entity.getDeclaredFields();
+                
+                for (Field campo : campos) {
+                    if (!"id".equals(campo.getName())) {
+                        campo.setAccessible(true);
+
+                        System.out.println("Ingrese el nuevo valor para " + campo.getName() + ":");
+                        Object nuevoValor = obtenerValorCampo(scanner, campo);
+                        campo.set(objeto_modificar, nuevoValor);
+                    }
+                }
+                
+                entityManager.getTransaction().begin();
+                entityManager.merge(objeto_modificar);
+                entityManager.getTransaction().commit();
+                
+                System.out.println("Entidad modificada correctamente");
+            }
+        } catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
     private static Object obtenerValorCampo(Scanner scanner, Field campo) {
         if (campo.getType() == String.class) {
             return scanner.next();

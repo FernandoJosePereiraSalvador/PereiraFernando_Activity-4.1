@@ -31,10 +31,11 @@ public class App {
                     DAO.insertar(entityManager, Persona.class);
                     break;
                 case 2:
+                    DAO.delete(entityManager, Persona.class);
                     // Lógica para eliminar persona
                     break;
                 case 3:
-                    // Lógica para modificar persona
+                    DAO.update(entityManager, Persona.class);
                     break;
                 default:
                     System.out.println("Opción no válida");
