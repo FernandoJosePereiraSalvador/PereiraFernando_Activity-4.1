@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+                 version="2.2">
+
+    <entity class="Modelo.Persona" name="Persona">
+        <table name="persona"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="nif" unique="true" nullable="false" length="9"/>
+            <basic name="nombre" nullable="false" length="25"/>
+            <basic name="apellido1" nullable="false" length="50"/>
+            <basic name="apellido2" length="50"/>
+            <basic name="ciudad" nullable="false" length="25"/>
+            <basic name="direccion" nullable="false" length="50"/>
+            <basic name="telefono" length="9"/>
+            <basic name="fechaNacimiento" nullable="false">
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="sexo" nullable="false" length="1"/>
+        </attributes>
+    </entity>
+
+</entity-mappings>
+
