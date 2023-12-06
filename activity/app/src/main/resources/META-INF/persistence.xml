@@ -9,6 +9,16 @@
         
         <class>Clases.Persona</class>
         <class>Clases.Profesor</class>
+        <class>Clases.Grupo</class>
+        <class>Clases.CursoEscolar</class>
+        <class>Clases.GrupoAsignaturas</class>
+        <class>Clases.GrupoEstudiantes</class>
+        <class>Clases.Asignatura</class>
+        <class>Clases.Departamento</class>
+        <class>Clases.Grado</class>
+        <class>Clases.Alumno</class>
+        <class>Clases.Evaluacion</class>
+        <class>Clases.Nota</class>
         
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

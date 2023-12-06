@@ -21,9 +21,9 @@ public class App {
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("Seleccione una opción:");
-            System.out.println("1. Insertar Persona");
-            System.out.println("2. Eliminar Persona");
-            System.out.println("3. Modificar Persona");
+            System.out.println("1. Insertar");
+            System.out.println("2. Eliminar");
+            System.out.println("3. Modificar");
 
             int opcion = scanner.nextInt();
 
