@@ -17,33 +17,35 @@ import javax.persistence.EntityManager;
 public class DAO {
 
     public static void insertar(EntityManager entityManager, Class<?> entity) {
-    try {
-        Scanner scanner = new Scanner(System.in);
+        try {
+            Scanner scanner = new Scanner(System.in);
 
-        Object nuevo_objeto = entity.getDeclaredConstructor().newInstance();
+            Object nuevo_objeto = entity.getDeclaredConstructor().newInstance();
 
-        Class<?> claseActual = entity;
-        while (claseActual != null) {
-            Field[] columnas = claseActual.getDeclaredFields();
-            for (Field columna : columnas) {
-                if (!"id".equals(columna.getName())) {
-                    System.out.println("Ingrese el valor para " + columna.getName() + ":");
-                    Object valor = obtenerValorCampo(scanner, columna);
-                    columna.setAccessible(true);
-                    columna.set(nuevo_objeto, valor);
+            Class<?> claseActual = entity;
+            while (claseActual != null) {
+                Field[] columnas = claseActual.getDeclaredFields();
+                for (Field columna : columnas) {
+                    if (!"id".equals(columna.getName())) {
+                        System.out.println("Ingrese el valor para " + columna.getName() + ":");
+                        Object valor = obtenerValorCampo(scanner, columna);
+                        columna.setAccessible(true);
+                        columna.set(nuevo_objeto, valor);
+                    }
                 }
+                claseActual = claseActual.getSuperclass();
             }
-            claseActual = claseActual.getSuperclass();
+            
+            System.out.println(nuevo_objeto.toString());
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(nuevo_objeto);
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
         }
-
-        entityManager.getTransaction().begin();
-        entityManager.persist(nuevo_objeto);
-        entityManager.getTransaction().commit();
-
-    } catch (Exception e) {
-        System.out.println("Error: " + e);
     }
-}
 
     public static void delete(EntityManager entityManager, Class<?> entity) {
         try {
@@ -75,25 +77,32 @@ public class DAO {
             int id = scanner.nextInt();
 
             Object objeto_modificar = entityManager.find(entity, id);
-            
-            if(objeto_modificar != null){
-                Field[] campos = entity.getDeclaredFields();
-                
-                for (Field campo : campos) {
-                    if (!"id".equals(campo.getName())) {
-                        campo.setAccessible(true);
 
-                        System.out.println("Ingrese el nuevo valor para " + campo.getName() + ":");
-                        Object nuevoValor = obtenerValorCampo(scanner, campo);
-                        campo.set(objeto_modificar, nuevoValor);
+            if (objeto_modificar != null) {
+                Class<?> claseActual = entity;
+                while (claseActual != null) {
+                    Field[] campos = claseActual.getDeclaredFields();
+
+                    for (Field campo : campos) {
+                        if (!"id".equals(campo.getName())) {
+                            campo.setAccessible(true);
+
+                            System.out.println("Ingrese el nuevo valor para " + campo.getName() + ":");
+                            Object nuevoValor = obtenerValorCampo(scanner, campo);
+                            campo.set(objeto_modificar, nuevoValor);
+                        }
                     }
+
+                    claseActual = claseActual.getSuperclass();
                 }
-                
+
                 entityManager.getTransaction().begin();
                 entityManager.merge(objeto_modificar);
                 entityManager.getTransaction().commit();
-                
+
                 System.out.println("Entidad modificada correctamente");
+            } else {
+                System.out.println("No se encontró el objeto con el ID");
             }
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
             System.out.println("Error: " + e);

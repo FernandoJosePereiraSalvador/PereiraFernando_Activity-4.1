@@ -126,3 +126,5 @@ CREATE TABLE nota (
     FOREIGN KEY (id_alumno) REFERENCES alumno(id_alumno),
     FOREIGN KEY (id_evaluacion) REFERENCES evaluacion(id)
 );
+
+ALTER TABLE persona ADD COLUMN dtype VARCHAR(255);

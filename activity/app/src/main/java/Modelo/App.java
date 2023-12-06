@@ -3,6 +3,16 @@
  */
 package Modelo;
 
+import Clases.Alumno;
+import Clases.Asignatura;
+import Clases.CursoEscolar;
+import Clases.Departamento;
+import Clases.Evaluacion;
+import Clases.Grado;
+import Clases.Grupo;
+import Clases.GrupoAsignaturas;
+import Clases.GrupoEstudiantes;
+import Clases.Nota;
 import Clases.Persona;
 import Clases.Profesor;
 import DAO.DAO;
@@ -48,7 +58,7 @@ public class App {
 
         }
     }
-    
+
     private static Class<?> obtenerClase() {
         Scanner scanner = new Scanner(System.in);
         Class<?> clase = null;
@@ -56,6 +66,16 @@ public class App {
         System.out.println("Seleccione una opción:");
         System.out.println("1. Profesor");
         System.out.println("2. Persona");
+        System.out.println("3. Grupo");
+        System.out.println("4. CursoEscolar");
+        System.out.println("5. GrupoAsignaturas");
+        System.out.println("6. GrupoEstudiantes");
+        System.out.println("7. Asignatura");
+        System.out.println("8. Departamento");
+        System.out.println("9. Grado");
+        System.out.println("10. Alumno");
+        System.out.println("11. Evaluacion");
+        System.out.println("12. Nota");
 
         int opcion = scanner.nextInt();
 
@@ -65,6 +85,36 @@ public class App {
                 break;
             case 2:
                 clase = Persona.class;
+                break;
+            case 3:
+                clase = Grupo.class;
+                break;
+            case 4:
+                clase = CursoEscolar.class;
+                break;
+            case 5:
+                clase = GrupoAsignaturas.class;
+                break;
+            case 6:
+                clase = GrupoEstudiantes.class;
+                break;
+            case 7:
+                clase = Asignatura.class;
+                break;
+            case 8:
+                clase = Departamento.class;
+                break;
+            case 9:
+                clase = Grado.class;
+                break;
+            case 10:
+                clase = Alumno.class;
+                break;
+            case 11:
+                clase = Evaluacion.class;
+                break;
+            case 12:
+                clase = Nota.class;
                 break;
             default:
                 System.out.println("Opción no válida");
