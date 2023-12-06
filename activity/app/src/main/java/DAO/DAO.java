@@ -16,21 +16,24 @@ import javax.persistence.EntityManager;
  */
 public class DAO {
 
-    public static void insertar(EntityManager entityManager,Class<?> entity) {
+    public static void insertar(EntityManager entityManager, Class<?> entity) {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            
+
             Field[] columnas = entity.getDeclaredFields();
             Object nuevo_objeto = entity.getDeclaredConstructor().newInstance();
-            
+
             for (Field columna : columnas) {
-                System.out.println("Ingrese el valor para " + columna.getName() + ":");
-                Object valor = obtenerValorCampo(scanner, columna);
-                columna.setAccessible(true);
-                columna.set(nuevo_objeto, valor);
+                if (!"id".equals(columna.getName())) {
+                    System.out.println("Ingrese el valor para " + columna.getName() + ":");
+                    Object valor = obtenerValorCampo(scanner, columna);
+                    columna.setAccessible(true);
+                    columna.set(nuevo_objeto, valor);
+                }
+
             }
-            
+
             entityManager.getTransaction().begin();
             entityManager.merge(nuevo_objeto);
             entityManager.getTransaction().commit();
@@ -48,14 +51,19 @@ public class DAO {
         } else if (campo.getType() == long.class || campo.getType() == Long.class) {
             return scanner.nextLong();
         } else if (campo.getType() == Date.class) {
-            System.out.println("Ingrese el valor para " + campo.getName() + " (formato yyyy-MM-dd):");
-            String fechaStr = scanner.next();
-            return java.sql.Date.valueOf(fechaStr);
+            while (true) {
+                System.out.println("Ingrese el valor para " + campo.getName() + " (formato yyyy-MM-dd):");
+                String fechaStr = scanner.next();
+                try {
+                    java.sql.Date fecha = java.sql.Date.valueOf(fechaStr);
+                    return fecha;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: Formato de fecha incorrecto. Inténtelo de nuevo.");
+                }
+            }
         } else if (campo.getType() == char.class || campo.getType() == Character.class) {
             return scanner.next().charAt(0);
         }
-
-        // Puedes agregar más casos según los tipos de datos que manejes
 
         return null;
     }
