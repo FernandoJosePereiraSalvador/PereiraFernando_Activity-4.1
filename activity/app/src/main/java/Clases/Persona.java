@@ -12,6 +12,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "persona")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "persona_type", discriminatorType = DiscriminatorType.STRING)
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

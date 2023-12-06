@@ -17,13 +17,14 @@ import javax.persistence.EntityManager;
 public class DAO {
 
     public static void insertar(EntityManager entityManager, Class<?> entity) {
-        try {
+    try {
+        Scanner scanner = new Scanner(System.in);
 
-            Scanner scanner = new Scanner(System.in);
+        Object nuevo_objeto = entity.getDeclaredConstructor().newInstance();
 
-            Field[] columnas = entity.getDeclaredFields();
-            Object nuevo_objeto = entity.getDeclaredConstructor().newInstance();
-
+        Class<?> claseActual = entity;
+        while (claseActual != null) {
+            Field[] columnas = claseActual.getDeclaredFields();
             for (Field columna : columnas) {
                 if (!"id".equals(columna.getName())) {
                     System.out.println("Ingrese el valor para " + columna.getName() + ":");
@@ -31,17 +32,18 @@ public class DAO {
                     columna.setAccessible(true);
                     columna.set(nuevo_objeto, valor);
                 }
-
             }
-
-            entityManager.getTransaction().begin();
-            entityManager.merge(nuevo_objeto);
-            entityManager.getTransaction().commit();
-
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
+            claseActual = claseActual.getSuperclass();
         }
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(nuevo_objeto);
+        entityManager.getTransaction().commit();
+
+    } catch (Exception e) {
+        System.out.println("Error: " + e);
     }
+}
 
     public static void delete(EntityManager entityManager, Class<?> entity) {
         try {

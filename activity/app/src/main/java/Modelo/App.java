@@ -4,6 +4,7 @@
 package Modelo;
 
 import Clases.Persona;
+import Clases.Profesor;
 import DAO.DAO;
 import java.util.Date;
 import java.util.Scanner;
@@ -28,14 +29,13 @@ public class App {
 
             switch (opcion) {
                 case 1:
-                    DAO.insertar(entityManager, Persona.class);
+                    DAO.insertar(entityManager, obtenerClase());
                     break;
                 case 2:
-                    DAO.delete(entityManager, Persona.class);
-                    // Lógica para eliminar persona
+                    DAO.delete(entityManager, obtenerClase());
                     break;
                 case 3:
-                    DAO.update(entityManager, Persona.class);
+                    DAO.update(entityManager, obtenerClase());
                     break;
                 default:
                     System.out.println("Opción no válida");
@@ -47,5 +47,30 @@ public class App {
             System.out.println(e);
 
         }
+    }
+    
+    private static Class<?> obtenerClase() {
+        Scanner scanner = new Scanner(System.in);
+        Class<?> clase = null;
+
+        System.out.println("Seleccione una opción:");
+        System.out.println("1. Profesor");
+        System.out.println("2. Persona");
+
+        int opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                clase = Profesor.class;
+                break;
+            case 2:
+                clase = Persona.class;
+                break;
+            default:
+                System.out.println("Opción no válida");
+                break;
+        }
+
+        return clase;
     }
 }
