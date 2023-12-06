@@ -16,7 +16,7 @@ public class App {
             EntityManager entityManager = conexionOBD.getEM();
             
             Persona persona_prueba = new Persona(
-                "123456789",             
+                "123456795",             
                 "Juan",                
                 "Pérez",               
                 "Gómez",          
